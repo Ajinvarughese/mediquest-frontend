@@ -1,0 +1,78 @@
+.banner-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(62,161,255,0.04);
+    padding: 80px;
+}
+
+.banner-content {
+    padding: 0 77px;
+    display: flex;
+    flex-direction: column;  
+    justify-content: center;
+    gap: 20px;                
+}
+
+.banner-heading > h2 {
+    font-size: 52px;
+}
+
+.banner-subheading > p {
+    font-size: 18px;
+    font-weight: 500;
+    color: #5C5C5C;
+}
+
+.banner-button {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 20px 0 0 10px;
+}
+
+.banner-button > button {
+    padding: 10px 10px;
+    border-radius: 10px;
+    height: auto;
+    cursor: pointer;
+}
+
+.banner-appoinment-button {
+    color: #fff;
+    background-color: #174eb2;
+}
+
+.banner-learn-button {
+    color: #5C5C5C;
+    background: transparent;
+    border: 1px solid #174eb2;
+}
+
+.banner-learn-button:hover {
+    color: #fff;
+    background-color: #174eb2;
+}
+
+/* Fix for images container */
+.banner-graphics {
+    position: relative;
+    width: 50%; /* Adjust this width based on the available space */
+}
+
+/* Adjust size and position of the ellipse */
+.banner-graphics > img:first-child {
+    width: 80%; /* Makes the ellipse fit within the container */
+    position: absolute;
+    top: -200px;
+    object-fit: cover; /* Ensures it covers the area without stretching */
+}
+
+/* Adjust doctor image position and size */
+.banner-graphics > img:nth-child(2) {
+    width: 130%;  /* You can adjust this value to make the doctor image smaller/bigger */
+    position: absolute;
+    top: -250px;
+    right: -5%;
+    object-fit: contain; /* Keeps the image's aspect ratio */
+}
