@@ -24,6 +24,7 @@ import About from "./pages/About";
 import InsuranceClaim from "./pages/InsuranceClaim";
 import LoginPage from './components/login/LoginPage';
 import { useState } from "react";
+import { getUser } from './hooks/LocalStorageUser';
 
 
 function App() {
@@ -45,10 +46,17 @@ function App() {
               </>
             }
           />
+          {
+            getUser().role === "PATIENT" && (
+              <>
+                <Route path="/appointment-booking" element={<AppointmentBooking />} />
+              <Route path="/appointment-booking/:id" element={<AppointmentBooking selected />} />
+              </>
+            )
+          }
           <Route path="*" element={<div>Page not found. Try going <a href='/'>home</a>.</div>} />
 
           <Route path="/doctor-list" element={<DoctorList />} />
-          <Route path="/appointment-booking" element={<AppointmentBooking />} />
           <Route path="/medicine-availability" element={<MedicineAvailability />} />
           <Route path="/vaccine" element={<Vaccine />} />
           <Route path="/clinic" element={<Clinic />} />

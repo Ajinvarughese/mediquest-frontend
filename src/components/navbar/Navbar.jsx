@@ -1,7 +1,7 @@
 import "./navbar.css";
 import logo from "../../assests/images/logo1.jpg";
-import search from "../../assests/images/search.png";
 import { Link, useNavigate } from "react-router-dom";
+import { deleteUser, getUser } from "../../hooks/LocalStorageUser";
 
 
 const Nvbar = () => {
@@ -23,7 +23,15 @@ const Nvbar = () => {
       </div>
 
       <div className="side-nav-items">
-        <h3 onClick={() => navigate("/login")} >Login</h3>
+        {
+          getUser().phone ? (
+            <h3 onClick={() => {deleteUser(); window.location.reload()}} >Logout</h3>
+          )
+          :
+          (
+            <h3 onClick={() => navigate("/login")} >Login</h3>
+          )
+        }
       </div>
     </div>
   );

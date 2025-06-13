@@ -58,9 +58,8 @@ const Footer = () => {
 
             </div>
 
-            <div className="footer-bottom">
-                <p>&copy; Suku_efx</p>
-                <p>Copyright 2025 All Right Preserved </p>
+            <div style={{width: "100%", textAlign: "center"}} className="footer-bottom">
+                <p>&copy; 2025 All Right Preserved </p>
             </div>
 
         </>

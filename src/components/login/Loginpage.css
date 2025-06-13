@@ -7,7 +7,6 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
-  overflow: hidden; /* Ensures the content is visible */
 }
 
 /* Background image behind everything */
