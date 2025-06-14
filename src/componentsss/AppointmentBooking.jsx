@@ -86,31 +86,54 @@ export default function AppointmentBooking() {
     handleAvailabilityCheck(selectedTime);
   };
 
-  const generateTimeSlots = () => {
-    if (!selectedDoctor || !selectedDoctor.fromTime || !selectedDoctor.toTime) return [];
+ const generateTimeSlots = () => {
+    if (!selectedDoctor || !selectedDoctor.fromTime || !selectedDoctor.toTime || !date) return [];
 
     const slots = [];
     const [fromHour, fromMin] = selectedDoctor.fromTime.split(":").map(Number);
     const [toHour, toMin] = selectedDoctor.toTime.split(":").map(Number);
 
-    let current = new Date();
-    current.setHours(fromHour, fromMin, 0, 0);
+    const today = new Date();
+    const isToday = new Date(date).toDateString() === today.toDateString();
+    const now = new Date();
 
-    const end = new Date();
-    end.setHours(toHour, toMin, 0, 0);
+    let slotTime = new Date(date);
+    slotTime.setHours(fromHour, fromMin, 0, 0);
 
-    while (current <= end) {
-      const hh = current.getHours().toString().padStart(2, "0");
-      const mm = current.getMinutes().toString().padStart(2, "0");
-      slots.push(`${hh}:${mm}`);
-      current.setMinutes(current.getMinutes() + 15);
+    const endTime = new Date(date);
+    endTime.setHours(toHour, toMin, 0, 0);
+
+    while (slotTime <= endTime) {
+      const slotCopy = new Date(slotTime);
+
+      const diffInMs = slotCopy.getTime() - now.getTime();
+      const diffInHours = diffInMs / (1000 * 60 * 60);
+
+      if (!isToday || diffInHours >= 2) {
+        const hh = slotCopy.getHours().toString().padStart(2, "0");
+        const mm = slotCopy.getMinutes().toString().padStart(2, "0");
+        slots.push(`${hh}:${mm}`);
+      }
+
+      slotTime.setMinutes(slotTime.getMinutes() + 15);
     }
 
     return slots;
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const selectedDateTime = new Date(`${date}T${time}`);
+    const now = new Date();
+    const hoursDiff = (selectedDateTime - now) / (1000 * 60 * 60);
+
+    if (hoursDiff < 2) {
+      alert("❌ You must book at least 2 hours in advance.");
+      return;
+    }
+
     if (!category || !doctor || !time || !availability) {
       alert("Please ensure all fields are filled and time is available.");
       return;
@@ -135,6 +158,7 @@ export default function AppointmentBooking() {
       setAvailability(null);
     }
   };
+
 
   return (
     <form

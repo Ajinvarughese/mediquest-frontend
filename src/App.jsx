@@ -25,6 +25,8 @@ import InsuranceClaim from "./pages/InsuranceClaim";
 import LoginPage from './components/login/LoginPage';
 import { useState } from "react";
 import { getUser } from './hooks/LocalStorageUser';
+import UserDashboard from './components/dash/UserDashBoard';
+import DoctorDashboard from './components/dash/DoctorDashboard';
 
 
 function App() {
@@ -49,8 +51,16 @@ function App() {
           {
             getUser().role === "PATIENT" && (
               <>
-                <Route path="/appointment-booking" element={<AppointmentBooking />} />
+              <Route path='/dashboard' element={<UserDashboard />} />
+              <Route path="/appointment-booking" element={<AppointmentBooking />} />
               <Route path="/appointment-booking/:id" element={<AppointmentBooking selected />} />
+              </>
+            )
+          }
+          {
+            getUser().role === "DOCTOR" && (
+              <>
+                <Route path='/dashboard' element={<DoctorDashboard />} />
               </>
             )
           }

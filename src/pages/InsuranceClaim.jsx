@@ -1,9 +1,8 @@
-// src/pages/InsuranceClaim.jsx
 import { useState } from 'react';
+import axios from 'axios';
 
 const InsuranceClaim = () => {
   const [formData, setFormData] = useState({
-    name: '',
     patientId: '',
     hospitalName: '',
     claimType: '',
@@ -20,10 +19,54 @@ const InsuranceClaim = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Claim submitted by ${formData.name} for ₹${formData.amount}`);
-    // Here, you'd send `formData` to your backend via POST
+
+    try {
+      // Step 1: Upload the document first
+      const fileData = new FormData();
+      fileData.append('file', formData.document);
+
+      const fileUploadResponse = await axios.post(
+        'http://localhost:8080/api/claims/file/upload',
+        fileData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      const documentUrl = fileUploadResponse.data; // Assuming this returns a plain string URL
+
+      // Step 2: Send the main claim data
+      const claimPayload = {
+        patientId: formData.patientId,
+        hospitalName: formData.hospitalName,
+        claimType: formData.claimType,
+        treatmentDescription: formData.treatmentDescription,
+        amount: formData.amount,
+        documentUrl, // use the uploaded file URL
+      };
+
+      const response = await axios.post(
+        'http://localhost:8080/api/claims',
+        claimPayload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      alert('Claim submitted successfully!');
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error submitting claim:', error);
+      alert('Failed to submit claim. Try again.');
+    } finally {
+      window.location.reload();
+    }
   };
 
   return (
@@ -33,16 +76,6 @@ const InsuranceClaim = () => {
         If you're admitted due to emergency (e.g., surgery, accident), please fill in the following to initiate your hospital-based insurance claim.
       </p>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Patient Full Name"
-          className="p-2 border rounded"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-
         <input
           type="text"
           name="patientId"
@@ -71,10 +104,10 @@ const InsuranceClaim = () => {
           required
         >
           <option value="">Select Claim Type</option>
-          <option value="Surgery">Surgery</option>
+          <option value="SURGERY">Surgery</option>
           <option value="ICU">ICU Admission</option>
-          <option value="Accident">Accident Emergency</option>
-          <option value="Others">Other</option>
+          <option value="ACCIDENT">Accident Emergency</option>
+          <option value="OTHERS">Other</option>
         </select>
 
         <textarea
