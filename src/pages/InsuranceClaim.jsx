@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { getUser } from '../hooks/LocalStorageUser';
 
 const InsuranceClaim = () => {
   const [formData, setFormData] = useState({
@@ -46,6 +47,9 @@ const InsuranceClaim = () => {
         claimType: formData.claimType,
         treatmentDescription: formData.treatmentDescription,
         amount: formData.amount,
+        patient: {
+          id: getUser().id
+        },
         documentUrl, // use the uploaded file URL
       };
 

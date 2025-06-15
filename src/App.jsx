@@ -27,6 +27,7 @@ import { useState } from "react";
 import { getUser } from './hooks/LocalStorageUser';
 import UserDashboard from './components/dash/UserDashBoard';
 import DoctorDashboard from './components/dash/DoctorDashboard';
+import AdminDash from './componentsss/admin/AdminDash';
 
 
 function App() {
@@ -61,6 +62,13 @@ function App() {
             getUser().role === "DOCTOR" && (
               <>
                 <Route path='/dashboard' element={<DoctorDashboard />} />
+              </>
+            )
+          }
+          {
+            getUser().role === "ADMIN" && (
+              <>
+                <Route path='/dashboard' element={<AdminDash />} />
               </>
             )
           }

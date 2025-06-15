@@ -9,16 +9,18 @@ export const getDate = (splitter) => {
     return year+splitter+month+splitter+day;
 }
 
-export const formattedDate = (date) => {
+export const formattedDate = (date, time=true) => {
     const dateObj = new Date(date);
 
-    const options = { 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true 
+    const options = {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        ...(time && {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        }),
     };
 
     const formattedDate = dateObj.toLocaleString('en-GB', options);  // Or 'en-US' for US-style formatting
